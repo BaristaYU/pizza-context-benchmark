@@ -1,0 +1,349 @@
+{
+  "version": "menu-3",
+  "source": "Named pizzas follow the in-game Recipe Book as listed on the Good Pizza, Great Pizza wiki (Recipe_Book). Categories follow the wiki's order list (List_of_orders), e.g. All Meats, Fruit Pizza, Smelly Toppings.",
+  "note": "Sauce 'any' means tomato or pesto. A category covers every listed topping; 'cheese' in a category means the cheese layer. A category in category_bases is also a pizza in the Recipe Book: ordering it brings that sauce and cheese.",
+  "recipes": {
+    "Classic Meat": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "pepperoni",
+        "sausage"
+      ]
+    },
+    "Meat Lovers": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "bacon",
+        "ham",
+        "pepperoni",
+        "sausage"
+      ]
+    },
+    "Supreme": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "bell_pepper",
+        "mushroom",
+        "olive",
+        "onion",
+        "pepperoni",
+        "sausage"
+      ]
+    },
+    "Hawaiian": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "ham",
+        "pineapple"
+      ]
+    },
+    "Fruity Pig": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "bacon",
+        "bell_pepper",
+        "ham",
+        "olive",
+        "pepperoni",
+        "pineapple",
+        "sausage"
+      ]
+    },
+    "Green Dream": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "basil",
+        "bell_pepper"
+      ]
+    },
+    "Salty Sailor": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "anchovy",
+        "olive"
+      ]
+    },
+    "Stinky Pete": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "anchovy",
+        "onion"
+      ]
+    },
+    "Coastal Classic": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "basil",
+        "scallop",
+        "shrimp"
+      ]
+    },
+    "Puttanesca": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "anchovy",
+        "garlic",
+        "olive"
+      ]
+    },
+    "Caprese": {
+      "sauce": "none",
+      "cheese": true,
+      "toppings": [
+        "basil",
+        "tomato"
+      ]
+    },
+    "Sunset Medley": {
+      "sauce": "tomato",
+      "cheese": true,
+      "toppings": [
+        "peach",
+        "pineapple",
+        "tomato"
+      ]
+    },
+    "Paradise Pie": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "bell_pepper",
+        "pineapple",
+        "shrimp"
+      ]
+    },
+    "Apple Crisp": {
+      "sauce": "pesto",
+      "cheese": true,
+      "toppings": [
+        "apple",
+        "chicken",
+        "onion"
+      ]
+    },
+    "Margherita": {
+      "sauce": "tomato",
+      "cheese": true,
+      "toppings": [
+        "basil"
+      ]
+    },
+    "Capricciosa": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "artichoke",
+        "ham",
+        "mushroom",
+        "olive"
+      ]
+    },
+    "Neapolitan": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "basil",
+        "tomato"
+      ]
+    },
+    "Flammkuchen": {
+      "sauce": "none",
+      "cheese": true,
+      "toppings": [
+        "bacon",
+        "onion"
+      ]
+    },
+    "Classic Greek": {
+      "sauce": "any",
+      "cheese": true,
+      "toppings": [
+        "basil",
+        "bell_pepper",
+        "olive",
+        "onion"
+      ]
+    },
+    "Pissaladiere": {
+      "sauce": "none",
+      "cheese": false,
+      "toppings": [
+        "anchovy",
+        "olive",
+        "onion"
+      ]
+    }
+  },
+  "categories": {
+    "meats": [
+      "anchovy",
+      "bacon",
+      "chicken",
+      "duck",
+      "ham",
+      "pepperoni",
+      "sausage",
+      "scallop",
+      "shrimp"
+    ],
+    "pork": [
+      "bacon",
+      "ham",
+      "pepperoni",
+      "sausage"
+    ],
+    "seafood": [
+      "anchovy",
+      "scallop",
+      "shrimp"
+    ],
+    "fruits": [
+      "apple",
+      "avocado",
+      "bell_pepper",
+      "eggplant",
+      "fig",
+      "jalapeno",
+      "olive",
+      "peach",
+      "pineapple",
+      "pumpkin",
+      "tomato",
+      "zucchini"
+    ],
+    "veggies": [
+      "artichoke",
+      "basil",
+      "corn",
+      "garlic",
+      "onion"
+    ],
+    "fungi": [
+      "mushroom",
+      "truffle"
+    ],
+    "green": [
+      "avocado",
+      "basil",
+      "bell_pepper",
+      "jalapeno",
+      "zucchini"
+    ],
+    "white": [
+      "cheese",
+      "chicken",
+      "garlic",
+      "mushroom",
+      "scallop"
+    ],
+    "spicy": [
+      "bell_pepper",
+      "jalapeno",
+      "pepperoni"
+    ],
+    "vegetarian": [
+      "apple",
+      "artichoke",
+      "avocado",
+      "basil",
+      "bell_pepper",
+      "corn",
+      "eggplant",
+      "fig",
+      "garlic",
+      "jalapeno",
+      "mushroom",
+      "olive",
+      "onion",
+      "peach",
+      "pineapple",
+      "pumpkin",
+      "tomato",
+      "truffle",
+      "zucchini"
+    ],
+    "vegan": [
+      "apple",
+      "artichoke",
+      "avocado",
+      "basil",
+      "bell_pepper",
+      "corn",
+      "eggplant",
+      "fig",
+      "garlic",
+      "jalapeno",
+      "mushroom",
+      "olive",
+      "onion",
+      "peach",
+      "pineapple",
+      "pumpkin",
+      "tomato",
+      "truffle",
+      "zucchini"
+    ],
+    "peppers": [
+      "bell_pepper",
+      "jalapeno"
+    ],
+    "stinky": [
+      "anchovy",
+      "garlic",
+      "onion"
+    ],
+    "fish": [
+      "anchovy"
+    ],
+    "all": [
+      "anchovy",
+      "apple",
+      "artichoke",
+      "avocado",
+      "bacon",
+      "basil",
+      "bell_pepper",
+      "chicken",
+      "corn",
+      "duck",
+      "eggplant",
+      "fig",
+      "garlic",
+      "ham",
+      "jalapeno",
+      "mushroom",
+      "olive",
+      "onion",
+      "peach",
+      "pepperoni",
+      "pineapple",
+      "pumpkin",
+      "sausage",
+      "scallop",
+      "shrimp",
+      "tomato",
+      "truffle",
+      "zucchini"
+    ]
+  },
+  "category_bases": {
+    "vegan": {
+      "sauce": "tomato",
+      "cheese": false
+    },
+    "vegetarian": {
+      "sauce": "any",
+      "cheese": true
+    }
+  }
+}

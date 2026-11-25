@@ -1,0 +1,8 @@
+{
+  "id": "qa_en_fixed_000439",
+  "difficulty": null,
+  "language": "en",
+  "order_text": "“I want 18 sausages and 9 figs on a 6-slice pizza. Keep the figs on one side of the pizza.”",
+  "clarification_text": "“There should be 18 sausages across all 6 slices of pie and 9 figs on half of the pie.”",
+  "recipe_text": "Sauce + Cheese + Sausage + (Fig)"
+}

@@ -1,0 +1,22 @@
+{
+  "dataset_version": "english100-v3-draft",
+  "language": "en",
+  "count": 100,
+  "environment_version": "mock-kitchen-4",
+  "reference_defaults": {
+    "dough": "regular",
+    "sauce_if_any": "tomato",
+    "bake": "normal",
+    "cuts": 6,
+    "topping_pieces_whole": 16,
+    "topping_pieces_half": 8
+  },
+  "inventory": "Regular and wheat dough, tomato and pesto sauce, cheese and 28 toppings; 100 units of each.",
+  "question_source": "Order and clarification lines from the Good Pizza, Great Pizza wiki (data/wiki); source.wiki_key locates each.",
+  "answer_source": "A is the wiki recipe of the order (source.recipe), with slicing and double baking that the order asks for (source.cuts, source.bake). The clarified L leads to the same A through data/menu.json.",
+  "answer_policy": "Only requirements stated in the order or implied by a named recipe or category are imposed. Unspecified cuts, bake, dough and exact topping counts are omitted from Answer. Reference defaults apply to T/E only.",
+  "execution_trace": "Actual call records with repeated pizza-shaped responses reduced to id/stage/location; final_state preserves the full physical state.",
+  "difficulty": "question.difficulty holds the order-structure tier computed from A (ocs) and the annotators' understanding difficulty before and after the clarification (lcs, null until labelled). The cases were drawn 33/33/34 by ocs tier; see selection.json for the pool and reserves.",
+  "review_status": "draft",
+  "approved_count": 0
+}

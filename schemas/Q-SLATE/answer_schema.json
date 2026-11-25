@@ -1,0 +1,25 @@
+{
+  "pizza_count": 1,
+  "pizzas": [
+    {
+      "sauce": [
+        "any"
+      ],
+      "cheese": true,
+      "toppings": [
+        "sausage",
+        "fig"
+      ],
+      "topping_counts": {
+        "sausage": 18,
+        "fig": 9
+      },
+      "topping_placement": {
+        "sausage": "whole",
+        "fig": "left"
+      },
+      "cuts": 6,
+      "allow_half_swap": true
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "trace": [
+    {
+      "tool": "place",
+      "args": {
+        "pizza": 1,
+        "item": "dough",
+        "kind": "regular"
+      },
+      "ok": true
+    },
+    {
+      "tool": "spread",
+      "args": {
+        "pizza": 1
+      },
+      "ok": true
+    },
+    {
+      "tool": "place",
+      "args": {
+        "pizza": 1,
+        "item": "sauce",
+        "kind": "tomato",
+        "region": "whole"
+      },
+      "ok": true
+    },
+    {
+      "tool": "place",
+      "args": {
+        "pizza": 1,
+        "item": "cheese",
+        "region": "whole"
+      },
+      "ok": true
+    },
+    {
+      "tool": "place",
+      "args": {
+        "pizza": 1,
+        "item": "topping",
+        "kind": "sausage",
+        "count": 18,
+        "region": "whole"
+      },
+      "ok": true
+    },
+    {
+      "tool": "place",
+      "args": {
+        "pizza": 1,
+        "item": "topping",
+        "kind": "fig",
+        "count": 9,
+        "region": "left"
+      },
+      "ok": true
+    },
+    {
+      "tool": "bake",
+      "args": {
+        "pizza": 1
+      },
+      "ok": true
+    },
+    {
+      "tool": "cut",
+      "args": {
+        "pizza": 1,
+        "slices": 6
+      },
+      "ok": true
+    },
+    {
+      "tool": "serve",
+      "args": {
+        "pizza": 1
+      },
+      "ok": true
+    }
+  ],
+  "final_state": {
+    "inventory": {
+      "dough": {
+        "regular": 99,
+        "wheat": 100
+      },
+      "sauce": {
+        "tomato": 99,
+        "pesto": 100
+      },
+      "topping": {
+        "pepperoni": 100,
+        "sausage": 82,
+        "mushroom": 100,
+        "olive": 100,
+        "onion": 100,
+        "bell_pepper": 100,
+        "pineapple": 100,
+        "anchovy": 100,
+        "bacon": 100,
+        "ham": 100,
+        "shrimp": 100,
+        "corn": 100,
+        "chicken": 100,
+        "basil": 100,
+        "tomato": 100,
+        "jalapeno": 100,
+        "garlic": 100,
+        "duck": 100,
+        "fig": 91,
+        "zucchini": 100,
+        "artichoke": 100,
+        "avocado": 100,
+        "eggplant": 100,
+        "truffle": 100
+      },
+      "cheese": 99
+    },
+    "pizza_count": 1,
+    "pizzas": [
+      {
+        "id": 1,
+        "stage": "submitted",
+        "dough": "regular",
+        "sauce": [
+          "tomato"
+        ],
+        "sauce_placement": {
+          "tomato": "whole"
+        },
+        "cheese": true,
+        "cheese_placement": "whole",
+        "toppings": [
+          "fig",
+          "sausage"
+        ],
+        "topping_counts": {
+          "sausage": 18,
+          "fig": 9
+        },
+        "topping_placement": {
+          "sausage": "whole",
+          "fig": "left"
+        },
+        "bake": "normal",
+        "cuts": 6
+      }
+    ],
+    "submitted": true
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "inventory": {
+    "dough": {
+      "regular": 100,
+      "wheat": 100
+    },
+    "sauce": {
+      "tomato": 100,
+      "pesto": 100
+    },
+    "topping": {
+      "pepperoni": 100,
+      "sausage": 100,
+      "mushroom": 100,
+      "olive": 100,
+      "onion": 100,
+      "bell_pepper": 100,
+      "pineapple": 100,
+      "anchovy": 100,
+      "bacon": 100,
+      "ham": 100,
+      "shrimp": 100,
+      "corn": 100,
+      "chicken": 100,
+      "basil": 100,
+      "tomato": 100,
+      "jalapeno": 100,
+      "garlic": 100,
+      "duck": 100,
+      "fig": 100,
+      "zucchini": 100,
+      "artichoke": 100,
+      "avocado": 100,
+      "eggplant": 100,
+      "truffle": 100
+    },
+    "cheese": 100
+  },
+  "pizza_count": 0,
+  "pizzas": [],
+  "submitted": false
+}

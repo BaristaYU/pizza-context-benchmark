@@ -1,0 +1,608 @@
+{
+  "count": 100,
+  "outcomes_passed": 100,
+  "reference_pizzas": 141,
+  "reference_actions": 1939,
+  "cases": [
+    {
+      "id": "en100_001",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_002",
+      "outcome_passed": true,
+      "actions": 19,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_003",
+      "outcome_passed": true,
+      "actions": 35,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_004",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_005",
+      "outcome_passed": true,
+      "actions": 24,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_006",
+      "outcome_passed": true,
+      "actions": 23,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_007",
+      "outcome_passed": true,
+      "actions": 22,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_008",
+      "outcome_passed": true,
+      "actions": 37,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_009",
+      "outcome_passed": true,
+      "actions": 39,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_010",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_011",
+      "outcome_passed": true,
+      "actions": 9,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_012",
+      "outcome_passed": true,
+      "actions": 30,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_013",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_014",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_015",
+      "outcome_passed": true,
+      "actions": 43,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_016",
+      "outcome_passed": true,
+      "actions": 13,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_017",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_018",
+      "outcome_passed": true,
+      "actions": 30,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_019",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_020",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_021",
+      "outcome_passed": true,
+      "actions": 45,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_022",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_023",
+      "outcome_passed": true,
+      "actions": 21,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_024",
+      "outcome_passed": true,
+      "actions": 39,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_025",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_026",
+      "outcome_passed": true,
+      "actions": 18,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_027",
+      "outcome_passed": true,
+      "actions": 22,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_028",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_029",
+      "outcome_passed": true,
+      "actions": 24,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_030",
+      "outcome_passed": true,
+      "actions": 19,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_031",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_032",
+      "outcome_passed": true,
+      "actions": 20,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_033",
+      "outcome_passed": true,
+      "actions": 35,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_034",
+      "outcome_passed": true,
+      "actions": 9,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_035",
+      "outcome_passed": true,
+      "actions": 14,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_036",
+      "outcome_passed": true,
+      "actions": 29,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_037",
+      "outcome_passed": true,
+      "actions": 22,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_038",
+      "outcome_passed": true,
+      "actions": 27,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_039",
+      "outcome_passed": true,
+      "actions": 33,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_040",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_041",
+      "outcome_passed": true,
+      "actions": 33,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_042",
+      "outcome_passed": true,
+      "actions": 43,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_043",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_044",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_045",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_046",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_047",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_048",
+      "outcome_passed": true,
+      "actions": 44,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_049",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_050",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_051",
+      "outcome_passed": true,
+      "actions": 34,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_052",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_053",
+      "outcome_passed": true,
+      "actions": 19,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_054",
+      "outcome_passed": true,
+      "actions": 38,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_055",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_056",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_057",
+      "outcome_passed": true,
+      "actions": 41,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_058",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_059",
+      "outcome_passed": true,
+      "actions": 22,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_060",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_061",
+      "outcome_passed": true,
+      "actions": 13,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_062",
+      "outcome_passed": true,
+      "actions": 22,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_063",
+      "outcome_passed": true,
+      "actions": 18,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_064",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_065",
+      "outcome_passed": true,
+      "actions": 23,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_066",
+      "outcome_passed": true,
+      "actions": 29,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_067",
+      "outcome_passed": true,
+      "actions": 13,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_068",
+      "outcome_passed": true,
+      "actions": 15,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_069",
+      "outcome_passed": true,
+      "actions": 29,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_070",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_071",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_072",
+      "outcome_passed": true,
+      "actions": 22,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_073",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_074",
+      "outcome_passed": true,
+      "actions": 18,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_075",
+      "outcome_passed": true,
+      "actions": 33,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_076",
+      "outcome_passed": true,
+      "actions": 13,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_077",
+      "outcome_passed": true,
+      "actions": 30,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_078",
+      "outcome_passed": true,
+      "actions": 23,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_079",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_080",
+      "outcome_passed": true,
+      "actions": 15,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_081",
+      "outcome_passed": true,
+      "actions": 36,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_082",
+      "outcome_passed": true,
+      "actions": 11,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_083",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_084",
+      "outcome_passed": true,
+      "actions": 19,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_085",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_086",
+      "outcome_passed": true,
+      "actions": 8,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_087",
+      "outcome_passed": true,
+      "actions": 19,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_088",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_089",
+      "outcome_passed": true,
+      "actions": 13,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_090",
+      "outcome_passed": true,
+      "actions": 29,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_091",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_092",
+      "outcome_passed": true,
+      "actions": 22,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_093",
+      "outcome_passed": true,
+      "actions": 12,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_094",
+      "outcome_passed": true,
+      "actions": 13,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_095",
+      "outcome_passed": true,
+      "actions": 18,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_096",
+      "outcome_passed": true,
+      "actions": 10,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_097",
+      "outcome_passed": true,
+      "actions": 13,
+      "ocs": "하"
+    },
+    {
+      "id": "en100_098",
+      "outcome_passed": true,
+      "actions": 14,
+      "ocs": "중"
+    },
+    {
+      "id": "en100_099",
+      "outcome_passed": true,
+      "actions": 23,
+      "ocs": "상"
+    },
+    {
+      "id": "en100_100",
+      "outcome_passed": true,
+      "actions": 16,
+      "ocs": "상"
+    }
+  ]
+}

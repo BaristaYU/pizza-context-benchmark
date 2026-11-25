@@ -1,0 +1,137 @@
+[
+  {
+    "tool": "create",
+    "args": {
+      "dough": "regular"
+    }
+  },
+  {
+    "tool": "spread",
+    "args": {
+      "pizza": 1
+    }
+  },
+  {
+    "tool": "fill",
+    "args": {
+      "pizza": 1,
+      "item": "sauce",
+      "kind": "tomato",
+      "region": "whole"
+    }
+  },
+  {
+    "tool": "fill",
+    "args": {
+      "pizza": 1,
+      "item": "cheese",
+      "region": "whole"
+    }
+  },
+  {
+    "tool": "place_toppings",
+    "args": {
+      "pizza": 1,
+      "kind": "olive",
+      "points": [
+        [
+          -0.45,
+          -0.45
+        ],
+        [
+          -0.15,
+          -0.45
+        ],
+        [
+          0.15,
+          -0.45
+        ],
+        [
+          0.45,
+          -0.45
+        ],
+        [
+          -0.45,
+          -0.15
+        ],
+        [
+          -0.15,
+          -0.15
+        ],
+        [
+          0.15,
+          -0.15
+        ],
+        [
+          0.45,
+          -0.15
+        ],
+        [
+          -0.45,
+          0.15
+        ],
+        [
+          -0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15
+        ],
+        [
+          0.45,
+          0.15
+        ],
+        [
+          -0.45,
+          0.45
+        ],
+        [
+          -0.15,
+          0.45
+        ],
+        [
+          0.15,
+          0.45
+        ],
+        [
+          0.45,
+          0.45
+        ]
+      ]
+    }
+  },
+  {
+    "tool": "bake",
+    "args": {
+      "pizza": 1
+    }
+  },
+  {
+    "tool": "cut",
+    "args": {
+      "pizza": 1,
+      "angle": -90.0
+    }
+  },
+  {
+    "tool": "cut",
+    "args": {
+      "pizza": 1,
+      "angle": -30.0
+    }
+  },
+  {
+    "tool": "cut",
+    "args": {
+      "pizza": 1,
+      "angle": 30.0
+    }
+  },
+  {
+    "tool": "serve",
+    "args": {
+      "pizza": 1
+    }
+  }
+]

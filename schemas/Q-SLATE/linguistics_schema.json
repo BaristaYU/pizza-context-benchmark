@@ -1,0 +1,41 @@
+{
+  "initial": {
+    "pizza_count": 1,
+    "pizzas": [
+      {
+        "toppings": [
+          "sausage",
+          "fig"
+        ],
+        "topping_counts": {
+          "sausage": 18,
+          "fig": 9
+        },
+        "topping_placement": {
+          "fig": "half_1"
+        },
+        "cuts": 6
+      }
+    ]
+  },
+  "clarified": {
+    "pizza_count": 1,
+    "pizzas": [
+      {
+        "toppings": [
+          "sausage",
+          "fig"
+        ],
+        "topping_counts": {
+          "sausage": 18,
+          "fig": 9
+        },
+        "topping_placement": {
+          "sausage": "whole",
+          "fig": "half_1"
+        },
+        "cuts": 6
+      }
+    ]
+  }
+}

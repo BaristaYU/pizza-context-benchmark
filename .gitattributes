@@ -1,0 +1,3 @@
+# Preserve bytes for generated dataset reproducibility checks.
+/data/english100/** -text
+/data/menu.json -text

@@ -1,0 +1,72 @@
+[
+  {
+    "tool": "place",
+    "args": {
+      "pizza": 1,
+      "item": "dough",
+      "kind": "regular"
+    }
+  },
+  {
+    "tool": "spread",
+    "args": {
+      "pizza": 1
+    }
+  },
+  {
+    "tool": "place",
+    "args": {
+      "pizza": 1,
+      "item": "sauce",
+      "kind": "tomato",
+      "region": "whole"
+    }
+  },
+  {
+    "tool": "place",
+    "args": {
+      "pizza": 1,
+      "item": "cheese",
+      "region": "whole"
+    }
+  },
+  {
+    "tool": "place",
+    "args": {
+      "pizza": 1,
+      "item": "topping",
+      "kind": "sausage",
+      "count": 18,
+      "region": "whole"
+    }
+  },
+  {
+    "tool": "place",
+    "args": {
+      "pizza": 1,
+      "item": "topping",
+      "kind": "fig",
+      "count": 9,
+      "region": "left"
+    }
+  },
+  {
+    "tool": "bake",
+    "args": {
+      "pizza": 1
+    }
+  },
+  {
+    "tool": "cut",
+    "args": {
+      "pizza": 1,
+      "slices": 6
+    }
+  },
+  {
+    "tool": "serve",
+    "args": {
+      "pizza": 1
+    }
+  }
+]
