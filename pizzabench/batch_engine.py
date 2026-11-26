@@ -1,4 +1,4 @@
-"""Batch model runs over kitchen orders with resume, attempt history and reports.
+"""Batch model runs with resume, attempt history and reports.
 
 Ported from main's shared batch engine. The run identity, resume validation and
 immutable attempt history (``batch.py``), the summary and HTML report
@@ -12,13 +12,13 @@ import json
 from pathlib import Path
 from threading import Event
 
-from . import ai_runner
+from . import ai_runner, reasoning
 from .batch import prepare_run, store_attempt, write_json
 from .batch_report import render_html, summarize
 from .controls import build_controls
 from .game_cli import ToolEnvironment
 from .kitchen import VERSION as KITCHEN_VERSION
-from .providers import RequestPacer, create_session
+from .providers import REQUEST_TIMEOUT, RequestPacer, create_session
 
 
 RETRYABLE = {"api_error", "not_run", "cancelled", "time_limit", "request_limit", "tool_limit", "cost_limit"}
@@ -40,11 +40,20 @@ def run_batch(cases, provider, model, key, folder, *, resume=False, request_inte
               max_tools=150, max_seconds=900, max_consecutive_errors=5, max_cost_usd=None,
               max_total_cost_usd=None, rules=None, session_options=None,
               environment_options=None, stop=None, on_event=None, session_factory=create_session,
-              agent_runner=ai_runner.run_agent, config=None):
+              agent_runner=ai_runner.run_agent, config=None, task="e2e"):
     environment_options = environment_options or {}
     session_options = session_options or {}
     config = config or ai_runner.load_config()
-    preflight_cases(cases, **environment_options)
+    is_reasoning = task == "reasoning"
+    if is_reasoning:
+        if rules is not None or environment_options:
+            raise ValueError("Reasoning uses the fixed L and menu prompt.")
+        reasoning.preflight_cases(cases)
+        session_options = {**session_options, "timeout": min(session_options.get("timeout", REQUEST_TIMEOUT), max_seconds)}
+    elif task == "e2e":
+        preflight_cases(cases, **environment_options)
+    else:
+        raise ValueError(f"Unsupported batch task: {task}")
     if not key and provider != "vllm":
         raise ValueError("선택 서비스의 API 키를 설정하세요.")
     if (max_cost_usd is not None or max_total_cost_usd is not None) and not ai_runner.model_price(provider, model, config):
@@ -58,16 +67,17 @@ def run_batch(cases, provider, model, key, folder, *, resume=False, request_inte
         controls = build_controls(cases, getattr(probe, "settings", {}), rules=rules,
                                   request_interval=request_interval, max_requests=max_requests,
                                   max_tools=max_tools, max_seconds=max_seconds,
-                                  max_consecutive_errors=max_consecutive_errors, max_cost_usd=max_cost_usd)
+                                  max_consecutive_errors=max_consecutive_errors, max_cost_usd=max_cost_usd, task=task)
     finally:
         probe.close()
     manifest, reports = prepare_run(folder, cases, provider, model, resume, controls=controls)
     recovery = None
+    restart_policy = "same_input" if is_reasoning else "initial_state"
     state_path = folder / "batch_state.json"
     if resume and state_path.exists():
         old_state = json.loads(state_path.read_text(encoding="utf-8"))
         if old_state.get("status") == "running":
-            recovery = {"previous_active_case_id": old_state.get("active_case_id"), "restart_policy": "initial_state",
+            recovery = {"previous_active_case_id": old_state.get("active_case_id"), "restart_policy": restart_policy,
                         "usage_note": "강제 종료 직전 요청의 사용량은 응답을 받지 못했으면 미확인입니다."}
             archive = {"state": old_state, "recovery": recovery}
             snapshot_path = folder / "active_case_snapshot.json"
@@ -96,20 +106,26 @@ def run_batch(cases, provider, model, key, folder, *, resume=False, request_inte
     def journal(status, active_case_id=None):
         write_json(state_path, {"status": status, "active_case_id": active_case_id,
                                 "updated_at": datetime.now().astimezone().isoformat(),
-                                "restart_policy": "initial_state"})
+                                "restart_policy": restart_policy})
 
     def persist():
-        summary = summarize(cases, reports, model)
+        summary = summarize(cases, reports, model, task="Reasoning" if is_reasoning else "E2E")
         summary.update(provider=provider, dataset_fingerprint=manifest["dataset_fingerprint"],
                        control_fingerprint=manifest["control_fingerprint"],
                        service_fingerprint=manifest.get("service_fingerprint"), controls=manifest["controls"],
                        run_manifest=manifest, batch_stop_reason=batch_stop, recovery=recovery,
-                       operational_warnings=operational_warnings, environment=KITCHEN_VERSION,
+                       operational_warnings=operational_warnings,
                        batch_cost_limit_usd=max_total_cost_usd, batch_spent_usd=round(spent, 6),
-                       usage_measurement={"policy": "Observation only; prompts, tools, kitchen, grading and API parameters are unchanged.",
+                       usage_measurement={"policy": "One response per case." if is_reasoning else
+                                          "Observation only; prompts, tools, kitchen, grading and API parameters are unchanged.",
                                           "request_counts": "Request attempts reported by the runner; usage only when returned by the provider."})
+        if is_reasoning:
+            summary.update(input_stage=reasoning.INPUT_STAGE, scoring_version=reasoning.SCORING_VERSION)
+        else:
+            summary["environment"] = KITCHEN_VERSION
         write_json(folder / "summary.json", summary)
-        (folder / "report.html").write_text(render_html(summary), encoding="utf-8")
+        if not is_reasoning:
+            (folder / "report.html").write_text(render_html(summary), encoding="utf-8")
         return summary
 
     summary = persist()
@@ -150,10 +166,13 @@ def run_batch(cases, provider, model, key, folder, *, resume=False, request_inte
         session = None
         try:
             session = session_factory(provider, key, model, pacer=pacer, stop=stop, **session_options)
-            report = agent_runner(case, session, stop=stop, rules=rules,
-                                  max_requests=max_requests, max_tools=max_tools, max_seconds=max_seconds,
-                                  max_consecutive_errors=max_consecutive_errors, max_cost_usd=case_limit,
-                                  on_event=checkpoint, config=config, **environment_options)
+            if is_reasoning:
+                report = reasoning.run_case(case, session, stop=stop, max_cost_usd=case_limit, config=config)
+            else:
+                report = agent_runner(case, session, stop=stop, rules=rules,
+                                      max_requests=max_requests, max_tools=max_tools, max_seconds=max_seconds,
+                                      max_consecutive_errors=max_consecutive_errors, max_cost_usd=case_limit,
+                                      on_event=checkpoint, config=config, **environment_options)
         except KeyboardInterrupt:
             stop.set()
             batch_stop = "cancelled"

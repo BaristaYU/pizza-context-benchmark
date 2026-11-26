@@ -14,6 +14,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from . import reasoning
 from .ai_runner import PROMPT_FORMAT
 from .batch import dataset_fingerprint
 from .game_cli import PROTOCOL_VERSION, tool_definitions
@@ -25,6 +26,9 @@ CONTROLLED_FILES = ("pizzabench/ai_runner.py", "pizzabench/kitchen.py", "pizzabe
                     "pizzabench/grading.py", "pizzabench/execution_eval.py",
                     "docs/pizza_domain_rules.md", "data/menu.json")
 SERVICE_FILES = ("pizzabench/providers.py",)
+REASONING_FILES = ("pizzabench/reasoning.py", "pizzabench/task_inputs.py", "pizzabench/l_to_a.py",
+                   "pizzabench/linguistics_form.py", "pizzabench/wiki_orders.py",
+                   "pizzabench/menu.py", "data/menu.json")
 OPERATIONAL_SETTINGS = {"provider", "model", "request_interval_seconds", "request_timeout_ms", "retry_attempts",
                         "transport"}
 
@@ -41,16 +45,22 @@ def source_digest(path):
 
 
 def build_controls(cases, settings, *, rules=None, request_interval=3, max_requests=60,
-                   max_tools=150, max_seconds=900, max_consecutive_errors=5, max_cost_usd=None):
-    experiment = {"version": 1,
-                  "source_files": {name: source_digest(ROOT / name) for name in CONTROLLED_FILES},
-                  "prompt_format": PROMPT_FORMAT,
-                  "rules_sha256": hashlib.sha256(rules.encode("utf-8")).hexdigest() if rules else None,
-                  "tool_definitions_sha256": digest(tool_definitions(Kitchen())),
-                  "protocol_version": PROTOCOL_VERSION,
-                  "dataset_fingerprint": dataset_fingerprint(cases),
-                  "limits": {"requests": max_requests, "tools": max_tools, "seconds": max_seconds,
-                             "consecutive_errors": max_consecutive_errors, "cost_usd": max_cost_usd}}
+                   max_tools=150, max_seconds=900, max_consecutive_errors=5, max_cost_usd=None, task="e2e"):
+    identity = {"version": 1, "dataset_fingerprint": dataset_fingerprint(cases)}
+    if task == "reasoning":
+        experiment = {**identity, "task": "Reasoning", "input_stage": reasoning.INPUT_STAGE,
+                      "source_files": {name: source_digest(ROOT / name) for name in REASONING_FILES},
+                      "prompt_format": reasoning.PROMPT_FORMAT, "scoring_version": reasoning.SCORING_VERSION,
+                      "limits": {"requests": 1, "seconds": max_seconds, "cost_usd": max_cost_usd}}
+    else:
+        experiment = {**identity,
+                      "source_files": {name: source_digest(ROOT / name) for name in CONTROLLED_FILES},
+                      "prompt_format": PROMPT_FORMAT,
+                      "rules_sha256": hashlib.sha256(rules.encode("utf-8")).hexdigest() if rules else None,
+                      "tool_definitions_sha256": digest(tool_definitions(Kitchen())),
+                      "protocol_version": PROTOCOL_VERSION,
+                      "limits": {"requests": max_requests, "tools": max_tools, "seconds": max_seconds,
+                                 "consecutive_errors": max_consecutive_errors, "cost_usd": max_cost_usd}}
     # Operational values are recorded but do not change what the model is asked to do.
     generation = {key: value for key, value in settings.items() if key not in OPERATIONAL_SETTINGS}
     service = {"version": 1, "provider": settings.get("provider"),

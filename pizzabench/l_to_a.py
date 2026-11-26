@@ -7,6 +7,7 @@ and slicing. It also checks the benchmark data: the A that a case's L leads to m
 the A written from the wiki recipe.
 """
 
+from collections import Counter
 from itertools import product
 import json
 
@@ -81,15 +82,58 @@ def _mirror(pizza):
             value[key] = {k: swap[v] for k, v in value[key].items()}
     if "cheese_placement" in value:
         value["cheese_placement"] = swap[value["cheese_placement"]]
+    for topping, quantity in pizza.get("topping_counts", {}).items():
+        if isinstance(quantity, dict) and set(quantity) <= {"left", "right"}:
+            value["topping_counts"][topping] = {swap[side]: count for side, count in quantity.items()}
+    return value
+
+
+def _json_key(value):
+    return json.dumps(value, sort_keys=True)
+
+
+def _canonical_pizza(pizza):
+    value = dict(pizza)
+    for field in ("sauce", "toppings"):
+        if field in value:
+            value[field] = sorted(value[field])
+    if value.get("allow_half_swap"):
+        return min((value, _mirror(value)), key=_json_key)
     return value
 
 
 def canonical(answer):
-    """A as a comparable value: pizza order, half order and alternative order do not matter."""
+    """Serialize unordered choices and pizzas, mirroring only swap-allowed pizzas."""
     options = answer.get("alternatives", [answer])
-    return sorted(json.dumps(sorted(min(json.dumps(p, sort_keys=True), json.dumps(_mirror(p), sort_keys=True))
-                                    for p in option["pizzas"])) for option in options)
+    return sorted(_json_key({**option, "pizzas": sorted(map(_canonical_pizza, option["pizzas"]), key=_json_key)})
+                  for option in options)
 
 
 def same_answer(a, b):
     return canonical(a) == canonical(b)
+
+
+def condition_differences(expected, actual):
+    """Report unmet and extra requirements without pairing unrelated pizzas."""
+    wanted, returned = canonical(expected), canonical(actual)
+    if len(wanted) != 1 or len(returned) != 1:
+        return {"alternatives": _unmatched(wanted, returned)}
+    wanted, returned = json.loads(wanted[0]), json.loads(returned[0])
+    differences = {}
+    if wanted["pizza_count"] != returned["pizza_count"]:
+        differences["pizza_count"] = {"expected": wanted["pizza_count"], "actual": returned["pizza_count"]}
+    pizzas = _unmatched(map(_json_key, wanted["pizzas"]), map(_json_key, returned["pizzas"]))
+    if pizzas["missing"] or pizzas["unexpected"]:
+        differences["pizzas"] = pizzas
+        if len(pizzas["missing"]) == len(pizzas["unexpected"]) == 1:
+            expected_pizza, actual_pizza = pizzas["missing"][0], pizzas["unexpected"][0]
+            differences["fields"] = {key: {"expected": expected_pizza.get(key), "actual": actual_pizza.get(key)}
+                                     for key in sorted(expected_pizza.keys() | actual_pizza.keys())
+                                     if expected_pizza.get(key) != actual_pizza.get(key)}
+    return differences
+
+
+def _unmatched(expected, actual):
+    expected, actual = Counter(expected), Counter(actual)
+    return {"missing": list(map(json.loads, (expected - actual).elements())),
+            "unexpected": list(map(json.loads, (actual - expected).elements()))}

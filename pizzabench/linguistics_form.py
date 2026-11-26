@@ -43,9 +43,10 @@ SAUCE_CHEESE = {
 
 # Options of which at most one is true; none true means the default.
 SINGLE_CHOICES = (
-    {"title": "조각 수", "default": "기본 6조각",
+    {"title": "도우", "default": "일반 도우(기본)", "keys": ("wheat_dough",)},
+    {"title": "조각 수", "default": "6조각(기본)",
      "keys": ("slices_2", "slices_4", "slices_8", "slices_18", "no_cut")},
-    {"title": "소스", "default": "기본",
+    {"title": "소스", "default": "소스 무관(기본)",
      "keys": ("tomato_sauce", "pesto_sauce", "no_sauce")},
 )
 
@@ -96,8 +97,8 @@ PIZZA_KEYS = tuple(PIZZA_OPTIONS)
 STAGES = ("initial", "clarified")
 
 GUIDE = """Fill the order form for each pizza. Tick only what the customer asks for in the text you were given.
-- Sauce and cheese come by default. Tick tomato_sauce or pesto_sauce only when that sauce is asked for, and no_sauce or no_cheese only when they are left off; a flatbread or bare bread means no sauce and no cheese.
-- Tick at most one slice option and at most one of tomato_sauce, pesto_sauce and no_sauce. A sauce that replaces a recipe's sauce is just that sauce.
+- Sauce and cheese come by default. Tick tomato_sauce or pesto_sauce only when that sauce is asked for, and no_sauce or no_cheese only when they are left off.
+- Tick at most one slice option and at most one of tomato_sauce, pesto_sauce and no_sauce. For a recipe with a requested sauce change, tick the recipe and the requested sauce.
 - Keep a named recipe or a category as it is; do not expand it into ingredients. If the customer also lists ingredients, tick those too.
 - A substitution such as "duck instead of ham" is duck plus no_ham.
 - Write one pizza entry per pizza to make, after any arithmetic in the order: three pizzas are three entries. Their order does not matter.
@@ -254,14 +255,14 @@ GUIDE_KO = """손님이 키오스크에서 주문서를 채운다고 생각하�
 피자
 - 피자 한 판마다 탭이 하나입니다. 판이 더 있으면 '피자 추가'를 누릅니다. 피자 순서는 상관없습니다.
 - '12명에게 4조각짜리로 한 조각씩'처럼 계산이 필요하면 계산한 판수만큼 만듭니다.
-- 조각 수는 따로 말이 없으면 '기본'으로 둡니다.
+- 도우는 따로 요청이 없으면 '일반 도우(기본)'으로 두고, 밀 도우를 요청하면 '밀 도우'를 고릅니다.
+- 조각 수는 따로 말이 없으면 '6조각(기본)'으로 둡니다.
 - 반반 피자는 '반반'을 체크하고 두 반쪽을 각각 채웁니다. 피자 전체에 해당하는 재료는 두 반쪽에 모두 체크합니다. 어느 쪽이 먼저인지는 상관없습니다.
 
 재료
-- 소스와 치즈는 기본으로 들어갑니다. 소스는 손님이 토마토나 페스토를 콕 집어 말할 때만 고르고, 빼달라고 하면 '소스 빼기'를 고릅니다. 치즈를 빼달라고 하면 '치즈 빼기'를 체크합니다.
-- flatbread나 빵만 달라는 주문은 '소스 빼기'와 '치즈 빼기'입니다.
+- 소스와 치즈는 기본으로 들어갑니다. 소스 종류를 따로 말하지 않으면 '소스 무관(기본)'으로 둡니다. 손님이 토마토나 페스토를 요청하면 해당 소스를 고르고, 소스를 빼 달라고 하면 '소스 빼기'를 고릅니다. 치즈를 빼 달라고 하면 '치즈 빼기'를 체크합니다.
 - 레시피 이름(Hawaiian 등)이나 '모든 고기' 같은 범주는 그대로 체크하고, 안에 든 재료를 따로 체크하지 않습니다. 손님이 재료를 따로 말했을 때만 그 재료도 체크합니다.
-- 'A 대신 B'는 B를 체크하고 'A 빼기'를 체크합니다. 레시피의 소스를 다른 소스로 바꿔달라는 주문은 그 소스만 고릅니다.
+- 'A 대신 B'는 B를 체크하고 'A 빼기'를 체크합니다. 레시피의 소스를 바꿔 달라고 하면 레시피 이름을 체크하고 요청한 소스를 고릅니다.
 - 다른 사람의 취향이나 잡담은 주문이 아니므로 체크하지 않습니다.
 
 이해 난이도

@@ -160,7 +160,7 @@ class CompatibleProviderTest(unittest.TestCase):
             calls.append((url, body))
             return {"choices": [{"message": {"content": "", "tool_calls": []}}], "usage": {}}
         with mock.patch.object(providers, "request_json", side_effect=fake):
-            MistralSession(SECRET, "mistral-small-latest").ask("prompt", [])
+            MistralSession(SECRET, "mistral-small-latest").ask("prompt", [{"name": "observe"}])
         self.assertTrue(calls[0][0].startswith("https://api.mistral.ai/v1/"))
         self.assertTrue(calls[0][1]["parallel_tool_calls"])
 

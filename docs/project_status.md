@@ -1,6 +1,6 @@
 # Data, Tech 인수인계
 
-이 프로젝트는 고객의 피자 주문을 읽고, 제작 조건을 정하고, 계획을 세워 실제로 만드는 과정에서 LLM의 능력을 평가한다. Data 파트는 어떤 주문에 무엇을 정답으로 인정할지 정한다. Tech 파트는 그 주문을 모델에게 주고 결과를 채점하는 프로그램을 만든다. 아래 내용은 2026-11-25 기준이다.
+이 프로젝트는 고객의 피자 주문을 읽고, 제작 조건을 정하고, 계획을 세워 실제로 만드는 과정에서 LLM의 능력을 평가한다. Data 파트는 어떤 주문에 무엇을 정답으로 인정할지 정한다. Tech 파트는 그 주문을 모델에게 주고 결과를 채점하는 프로그램을 만든다. 아래 내용은 2026-11-26 기준이다.
 
 ## Data 파트
 
@@ -38,10 +38,12 @@ GUI(`python -m pizzabench.game`)와 CLI(`python -m pizzabench.game_cli`)는 같�
 
 모델은 지시문 없이 CLI의 ready 이벤트(주문, 상태, 메뉴)와 도구 명세만 받고 스스로 주문을 처리한다. Gemini, OpenAI, Anthropic API와 Mistral, vLLM으로 띄운 로컬 모델을 지원한다. GUI의 AI 막대에서 한 문항 또는 100문항 전체를 실행하고, `scripts/run_benchmark.py`로 같은 일괄 실행을 명령행에서 할 수 있다. 실행 전에 비용을 추정하고, 실행마다 통제변수 지문을 저장해 같은 조건의 실행끼리만 비교한다. 자세한 내용은 [모델 실행](model_runs.md)에 있다.
 
+독립 Reasoning은 `--task reasoning`으로 실행한다. 재확인까지 반영한 참조 L과 메뉴를 입력으로 받아 A를 한 번 생성한다. 생성된 A의 형식과 조건을 검사하고 문항별 응답, 조건 차이, 형식 오류와 집계를 JSON으로 저장한다. [Reasoning 실행과 채점](model_runs.md#독립-reasoning-평가)
+
 ### 다음 작업
 
 1. 팀원의 L 작성 결과를 받아 `scripts/compare_linguistics.py`로 초안과 비교하고 Ground Truth를 확정한다. `--write-difficulty`로 이해 난이도를 데이터에 저장하고, 비율이 치우치면 예비 주문으로 문항을 바꾼다.
-2. 단계별 평가를 연결한다. NLU는 Q에서 L을, Reasoning은 L과 메뉴에서 A를, Planning은 A와 S에서 T를 만들게 하고, E2E는 전체를 한 번에 수행하게 한다. 모델이 쓴 L은 `linguistics_form.compare`로, 모델이 쓴 A는 `l_to_a.same_answer`로 채점할 수 있다. 두 비교 함수는 있지만, 모델에게 단계 과제를 주고 답을 받아 채점, 기록하는 실행 경로는 아직 없다.
+2. NLU에서 Q로부터 모델이 작성한 L을 `linguistics_form.compare`로 채점한다. Planning에서 모델이 참조 A와 초기 S로 작성한 T를 재생하고, 실행 가능 여부와 A 충족, 제출을 검사한다.
 3. 실패한 문항을 단계별로 모아 보는 실패 분석 리포트를 만든다.
 4. Computer Use 모드를 설계한다. 서비스별 화면 조작 도구와 화면 조작이 가능한 로컬 모델을 같은 Tk 창에 연결한다.
 
@@ -55,6 +57,8 @@ python -m pizzabench.english100
 python -m pizzabench.game_cli --list-cases
 ```
 
-코드는 제작 상태를 관리하는 `pizzabench/kitchen.py`, 주문과 채점을 묶는 `game.py`, 도구 통신을 담당하는 `game_cli.py`부터 읽는다. 주문 충족은 `grading.py`, 계획 이행은 `execution_eval.py`, 모델 실행은 `ai_runner.py`와 `providers.py`에 있다. 기존 계획 재생기 `environment.py`는 `schemas/`와 `data/samples/`의 이전 형식(환경 버전 `0.2`)을 검사하는 데만 쓴다.
+코드는 제작 상태를 관리하는 `pizzabench/kitchen.py`, 주문과 채점을 묶는 `game.py`, 도구 통신을 담당하는 `game_cli.py`부터 읽는다. 주문 충족은 `grading.py`, 계획 이행은 `execution_eval.py`, 모델 실행은 `ai_runner.py`와 `providers.py`에 있다.
+
+`environment.py`의 `PizzaEnvironment`는 토핑의 개수와 영역을 받는 이 프로젝트의 제작 API `0.2`를 구현한다. `data/samples/`의 10건은 공개 위키 주문을 바탕으로 만든 테스트 샘플이며, `schemas/`에는 같은 샘플의 JSON 예시가 있다. 현재 영어 100문항은 토핑 위치를 좌표로 받는 `mock-kitchen-4`에서 실행한다. 현재 주방도 `environment.py`에서 기본 재료 목록과 공통 도구 오류를 가져온다.
 
 기능별 작업 브랜치에서 진행하고, 공유하는 필드나 채점 의미를 바꿀 때는 관련 문서와 테스트를 함께 갱신한다.

@@ -185,10 +185,11 @@ class GeminiSession:
         if not self.history:
             self.history.append({"role": "user", "parts": [{"text": prompt}]})
         body = {"contents": self.history,
-                "tools": [{"functionDeclarations": self.declarations(tools)}],
-                "toolConfig": {"functionCallingConfig": {"mode": "AUTO"}},
                 # Visibility only: thought summaries come back; the thinking itself is unchanged.
                 "generationConfig": {"thinkingConfig": {"includeThoughts": True}}}
+        if tools:
+            body["tools"] = [{"functionDeclarations": self.declarations(tools)}]
+            body["toolConfig"] = {"functionCallingConfig": {"mode": "AUTO"}}
         if self.reasoning_effort:
             body["generationConfig"]["thinkingConfig"]["thinkingLevel"] = self.reasoning_effort
         value = request_json(self.url("generateContent"), {"x-goog-api-key": self.key}, body, timeout=self.timeout)
@@ -258,8 +259,9 @@ class ChatSession:
     def ask(self, prompt, tools):
         if not self.history:
             self.history.append({"role": "user", "content": prompt})
-        body = {"model": self.model, "messages": self.history, "tools": self.declarations(tools),
-                "tool_choice": "auto", "parallel_tool_calls": True, "stream": False}
+        body = {"model": self.model, "messages": self.history, "stream": False}
+        if tools:
+            body.update(tools=self.declarations(tools), tool_choice="auto", parallel_tool_calls=True)
         if self.max_output_tokens:
             body["max_completion_tokens"] = self.max_output_tokens
         body.update(self.extra_body())
@@ -337,8 +339,9 @@ class OpenAISession:
     def ask(self, prompt, tools):
         if not self.history:
             self.history.append({"role": "user", "content": prompt})
-        body = {"model": self.model, "input": self.history, "tools": self.declarations(tools),
-                "tool_choice": "auto", "parallel_tool_calls": True, "store": False}
+        body = {"model": self.model, "input": self.history, "store": False}
+        if tools:
+            body.update(tools=self.declarations(tools), tool_choice="auto", parallel_tool_calls=True)
         if self.reasoning:
             body["reasoning"] = {"summary": "auto"}
             if self.reasoning_effort:
@@ -450,9 +453,10 @@ class AnthropicSession:
         if not self.history:
             self.history.append({"role": "user", "content": prompt})
         body = {"model": self.model, "max_tokens": self.max_output_tokens, "messages": self.history,
-                "tools": self.declarations(tools), "tool_choice": {"type": "auto"},
                 # Visibility only: summaries instead of empty thinking text; thinking is unchanged.
                 "thinking": {"type": "adaptive", "display": "summarized"}}
+        if tools:
+            body.update(tools=self.declarations(tools), tool_choice={"type": "auto"})
         if self.effort:
             body["output_config"] = {"effort": self.effort}
         value = request_json(ENDPOINTS["anthropic"] + "/messages", self.headers(), body, timeout=self.timeout)
