@@ -2,18 +2,17 @@
 
 `pizzabench.game_cli`가 표준 입력으로 받던 도구 호출을 모델 API가 보내도록 연결한 기능이다. 모델은 CLI 세션과 같은 `ToolEnvironment`에서 주문을 읽고, 좌표 기반 `Kitchen`(`mock-kitchen-4`)을 조작한 뒤 `finish`를 호출한다. 채점은 사람이 GUI에서 만들 때와 같은 코드로 한다. 화면(`game.py`)과 JSONL 프로토콜은 바뀌지 않았다.
 
-배치 실행, 이어 실행, 시도 이력, 결과 보고서와 실행 비교는 main의 기능을 옮겨 왔다. 같은 기능을 게임 화면에서도 실행할 수 있다.
+배치 실행은 이전 시도와 결과 보고서를 남긴다. 게임 화면에서도 배치를 시작하고 보고서를 열 수 있다.
 
 ## 게임 화면에서 실행하기
 
 ```powershell
-cd pizza_context_benchmark
 py -m pizzabench.game
 ```
 
 `game.py`는 패키지 안의 모듈을 불러오므로 파일 경로로 직접 실행하지 않고 `-m`으로 실행한다. 화면은 기본으로 영어 100문항(`data/english100/benchmark_cases.jsonl`)과 연습 주문 4개를 불러온다. 다른 문항 파일은 `--data`로 지정한다.
 
-상단 AI 막대에서 서비스(`gemini`, `openai`, `anthropic`, `vllm`)와 모델, 사고 수준을 고르고, 현재 문항과 전체 문항 중 실행 범위를 정한 뒤 `AI 실행`을 누른다. 현재 문항은 모델이 화면의 주방을 직접 조작하므로 진행 과정이 그대로 보인다. 전체 문항은 배치 엔진으로 실행하며, 시작 전에 예상 비용을 보여 주고 확인을 받는다. `중지`는 진행 중인 요청이 끝난 뒤 멈춘다. 모델이 실행하는 동안에는 손으로 주방을 조작할 수 없다.
+상단 AI 막대에서 서비스(`gemini`, `openai`, `anthropic`, `mistral`, `vllm`)와 모델, 사고 수준을 고르고, 현재 문항과 전체 문항 중 실행 범위를 정한 뒤 `AI 실행`을 누른다. 현재 문항은 모델이 화면의 주방을 직접 조작하므로 진행 과정이 그대로 보인다. 전체 문항은 배치 엔진으로 실행하며, 시작 전에 예상 비용을 보여 주고 확인을 받는다. `중지`는 진행 중인 요청이 끝난 뒤 멈춘다. 모델이 실행하는 동안에는 손으로 주방을 조작할 수 없다.
 
 `SLATE 데이터`는 위에서부터 현재 문항, Q, 모델 출력, SLATE 비교를 보여 준다. 모델 출력의 진행 과정 탭은 요청마다 사고와 글, 도구 호출과 결과를 쌓고, 원본 응답 전체 탭은 서비스가 돌려준 응답을 그대로 보여 준다(서명과 암호화된 값만 길이로 줄인다). 실행 중에도 실시간으로 갱신된다. SLATE 비교는 S, L, A, T, E마다 정답과 모델 출력을 나란히 보여 준다. 현재 실행 방식은 모델이 L과 A를 따로 쓰지 않으므로 그 두 탭의 모델 쪽은 비어 있다. 정답이 들어 있으므로 Computer Use 평가의 관측 화면으로 쓰지 않는다. `채점 결과`는 이번에 사람과 모델이 완료한 문항의 주문 조건 충족, 요청 수, 추정 비용을 보여 주고, 전체 문항 실행의 HTML 보고서를 연다. 현재 문항 실행 기록은 `results/gui/`, 전체 문항 실행은 `results/run_*/`에 저장된다.
 
@@ -41,8 +40,6 @@ py -m pizzabench.game
 
 모든 어댑터는 Python 표준 라이브러리로 HTTP를 호출하며 새 의존성을 추가하지 않았다. 기본 모델은 가장 저렴한 연결 확인용이다. 비교 실험에 쓸 모델은 `--ai-model`로 정확한 ID를 지정한다. 계정에서 쓸 수 있는 모델은 `--list-models`로 확인하며, 이 조회는 토큰을 쓰지 않는다. 2026-11-24에 `gemini`, `openai`, `anthropic`은 실제 API로 확인했고 `mistral`은 키가 없어 모의 응답으로만 검증했다.
 
-main에 있던 Groq와 OpenRouter는 모델 실행기에서 지웠다. 두 서비스의 무료 한도(하루 요청 수와 토큰 수)로는 벤치마크 한 번을 끝낼 수 없기 때문이다. Mistral의 무료 플랜은 초당 1요청과 월 토큰 한도 안에서 실행할 수 있어 남겼다. 영어 25문항 파일럿의 서비스 설정(`configs/english_models.json`)은 별도 기능이라 그대로 두었다.
-
 모든 서비스에서 한 응답에 여러 도구를 호출하는 병렬 호출을 허용한다. Gemini는 병렬 호출을 끌 수 없으므로, OpenAI와 vLLM에도 `parallel_tool_calls=true`를 보내 조건을 맞췄다.
 
 ### 사고 내용의 보존과 표시
@@ -58,7 +55,7 @@ main에 있던 Groq와 OpenRouter는 모델 실행기에서 지웠다. 두 서�
 48GB GPU 1장에서 Qwen3.8-27B와 Gemma 4 31B를 비교하는 것을 기준으로 설정했다. Computer Use 평가 후보는 `computer_use_models`에 따로 적었다(실행기는 아직 없다). Qwen3.8의 샘플링과 도구 호출 파서는 모델 카드에서 확인하지 못해 Qwen3.6 값을 임시로 쓴다. 두 모델 모두 FP8로 서빙해 정밀도를 맞추고, 샘플링은 각 모델 카드의 권장값을, 사고 모드는 프런티어 모델과 같이 켠 상태를 쓴다. 서빙 명령과 설정값은 `configs/agent_models.json`의 `local_models`에 있다. Gemma 4의 vLLM 도구 호출 파서 이름은 모델 카드에 없어서, 서빙 전에 vLLM 문서에서 확인해야 한다.
 
 ```powershell
-python -m pizzabench.game_cli --case en100_000007 --ai-provider vllm --ai-model Qwen/Qwen3.8-27B --base-url http://GPU서버:8000/v1
+python -m pizzabench.game_cli --case en100_007 --ai-provider vllm --ai-model Qwen/Qwen3.8-27B --base-url http://GPU서버:8000/v1
 ```
 
 vLLM이 돌려주는 사고 내용(`reasoning_content`)은 다음 요청의 대화에 그대로 남긴다. 로컬 모델에는 토큰 단가가 없으므로 비용 한도 대신 요청 수와 도구 호출 수로 예산을 맞춘다. 실행 시간은 GPU 성능에 따라 달라지므로 통과 조건으로 쓰지 않고 따로 기록한다. 아직 실제 vLLM 서버로는 검증하지 않았다.
@@ -66,8 +63,8 @@ vLLM이 돌려주는 사고 내용(`reasoning_content`)은 다음 요청의 대�
 ## 한 문항 실행
 
 ```powershell
-python -m pizzabench.game_cli --case en100_000007 --ai-provider anthropic --estimate-cost
-python -m pizzabench.game_cli --case en100_000007 --ai-provider anthropic --max-cost 0.10 --output run.json
+python -m pizzabench.game_cli --case en100_007 --ai-provider anthropic --estimate-cost
+python -m pizzabench.game_cli --case en100_007 --ai-provider anthropic --max-cost 0.10 --output run.json
 ```
 
 `--estimate-cost`는 생성 요청 없이 낙관·보수 비용을 계산한다. 낙관 추정은 모델이 참조 계획과 같은 호출을 한 턴에 하나씩 한다고 가정하고, 보수 추정은 `--max-requests`까지 모두 쓰며 턴마다 가장 큰 응답과 추론 400토큰이 붙는다고 가정한다. 참조 계획은 `english100.plan_from_answer`로 만들어 오프라인으로 실행해 보고, 그 대화의 크기를 잰다. Gemini와 Anthropic은 무료 토큰 계산 엔드포인트로 실측하고, 계산 엔드포인트가 없는 OpenAI는 Gemini 실측값보다 높은 고정 비율을 쓴다.
@@ -109,9 +106,29 @@ python scripts/run_benchmark.py --provider anthropic --max-cost 0.30 --max-total
 python scripts/run_benchmark.py --provider anthropic --resume results/run_20261124_...
 ```
 
-기본 대상은 영어 100문항이다. `--cases`로 문항을 고르고, `--include-practice`로 한국어 연습 주문 4개를 포함할 수 있다. 다른 Q-SLATE 파일은 `--data`로 지정한다. 모든 문항이 주방에서 열리는지 먼저 확인하며, 하나라도 열리지 않으면 요청을 보내기 전에 중단한다.
+영어 100문항 중 앞 10개를 기본으로 실행한다. `--max-cases 100`으로 전체 문항을 실행할 수 있다. `--cases`로 문항을 고르고, `--include-practice`로 한국어 연습 주문 4개를 포함할 수 있다. 다른 Q-SLATE 파일은 `--data`로 지정한다. 모든 문항이 주방에서 열리는지 먼저 확인하며, 하나라도 열리지 않으면 요청을 보내기 전에 중단한다.
 
 결과는 `results/` 아래에 문항별 JSON, `history/`의 시도 이력, `summary.json`, `report.html`로 저장된다. 이어 실행은 main과 같다. 완료 선언한 문항은 조건 미충족이어도 다시 호출하지 않고, API 오류·중단·요청 한도·비용 한도·미실행 문항만 초기 상태에서 다시 시작한다. 이전 시도는 지우지 않는다. HTTP 429를 받으면 배치를 멈추고 남은 문항은 미실행으로 남긴다. `--max-total-cost`는 이번 실행에서 쓴 추정 비용의 합이 한도에 이르면 다음 문항을 시작하지 않는다.
+
+## 독립 Reasoning 평가
+
+문항마다 재확인까지 반영한 참조 L과 공통 메뉴를 한 번 보내 제작 조건 A를 받는다. 현재 영어 100문항의 L은 팀 검수 전 초안이다. 모델은 도구 없이 JSON으로 답하고, 채점에는 참조 A를 사용한다.
+
+```powershell
+python scripts/run_benchmark.py --task reasoning --provider anthropic --max-cases 3 --estimate-cost
+python scripts/run_benchmark.py --task reasoning --provider anthropic --max-cases 3
+```
+
+`--cases`로 문항을 고르거나 `--max-cases 100`으로 전체 문항을 실행할 수 있다. `--data`로 받은 문항에는 유효한 `linguistics.clarified`와 `answer`가 필요하다. `--estimate-cost`는 프롬프트와 참조 답의 글자 수를 로컬에서 계산한다. 보수 추정에는 문항당 출력 400토큰을 더한다. 이 모드의 비용 추정에는 API 키가 필요하지 않다. 한 요청의 제한 시간은 `--request-timeout`과 `--max-seconds` 중 작은 값이다.
+
+### 응답 규약과 채점
+
+- JSON 객체 하나를 답한다. 응답 전체를 감싼 JSON 코드 블록도 읽는다. 한 주문은 `pizza_count`와 `pizzas`를 갖고, 대안이 있으면 `alternatives`에 완전한 주문을 모두 넣는다. 판수는 양의 정수이며 각 주문의 `pizzas` 길이와 같아야 한다.
+- `reasoning-a-v1`은 형식을 검사한 다음 `l_to_a.same_answer`로 비교한다. 소스·토핑 목록, 피자, 대안 순서의 차이를 허용한다. `allow_half_swap`가 참이면 피자 전체의 좌우를 함께 바꾼 답도 인정한다. 한 조건을 생략하거나 더하면 조건 불일치로 기록한다.
+- 문항 JSON에는 `response_text`, `raw_reply`, JSON으로 읽은 `normalized_answer`, `score`를 저장한다. `score.status`는 `passed`, `format_error`, `condition_mismatch` 중 하나이며 오류 설명과 조건 차이를 함께 기록한다. API 오류는 실행 종료 이유에 기록한다.
+- `summary.json`은 전체 시도 기준 성공률, 응답 형식이 유효한 문항의 성공률, 형식 오류율을 기록한다. 전체 시도에는 형식 오류도 포함되고, 형식 오류율의 분모는 응답을 받은 문항 수다.
+
+기본 결과 위치는 저장소 옆 `../pizza-benchmark-results/reasoning_*`다. `--output-dir`로 위치를 지정할 수 있다. 문항별 JSON과 `summary.json`, `run_manifest.json`, `history/`를 남긴다. 이어 실행하려면 같은 모델·문항·설정으로 `--resume`에 해당 폴더를 전달한다. 응답을 받아 채점한 문항은 판정과 관계없이 보존하고, API 오류나 미실행 문항은 같은 입력으로 다시 시도한다.
 
 ## 통제 지문과 실행 비교
 

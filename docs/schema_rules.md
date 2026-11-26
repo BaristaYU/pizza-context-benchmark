@@ -28,12 +28,12 @@
 | Task | 선택하는 입력 |
 | --- | --- |
 | NLU | question의 order_text |
-| Reasoning | 주문 텍스트와 공개된 문장에 해당하는 정답 linguistics |
+| Reasoning | 참조 linguistics와 공통 menu. 독립 실행에서는 재확인까지 반영한 L |
 | Planning | 정답 answer와 초기 state |
 | Tool Use / Computer Use | 참조 tool_calling과 초기 state |
 | E2E | 주문 텍스트와 초기 state |
 
-“네?”를 선택한 뒤에는 `clarified=True`로 재확인 문장을 공개합니다. question의 recipe_text와 참조 execution은 채점·검수에 사용합니다. 공통 레시피·도구 명세 등은 실험 설정에서 제공합니다.
+NLU와 E2E에서 `clarified=True`는 재확인 문장을 공개합니다. Reasoning에서 같은 옵션은 L의 `clarified` 버전을 선택합니다. question의 recipe_text와 참조 execution은 채점·검수에 사용합니다. 공통 메뉴와 도구 명세는 Task의 입력 범위에 맞게 제공합니다.
 
 ```python
 from pizzabench import build_task_input

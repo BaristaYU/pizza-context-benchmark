@@ -14,8 +14,8 @@ def build_task_input(case, task, *, clarified=False):
         raise ValueError(f"Unsupported task: {task}")
     if type(clarified) is not bool:
         raise ValueError("clarified must be a boolean")
-    reads_question = task in {"NLU", "Reasoning", "E2E"}
-    if clarified and not reads_question:
+    reads_question = task in {"NLU", "E2E"}
+    if clarified and not reads_question and task != "Reasoning":
         raise ValueError(f"Clarification is not an input to {task}")
 
     result = {}

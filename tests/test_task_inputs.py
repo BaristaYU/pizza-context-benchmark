@@ -29,7 +29,7 @@ class TaskInputTests(unittest.TestCase):
                 self.assertNotIn("HIDDEN_", json.dumps(inputs))
 
     def test_clarification_is_revealed_only_when_requested(self):
-        for task in ("NLU", "Reasoning", "E2E"):
+        for task in ("NLU", "E2E"):
             with self.subTest(task=task):
                 initial = build_task_input(CASE, task)
                 clarified = build_task_input(CASE, task, clarified=True)
@@ -40,7 +40,8 @@ class TaskInputTests(unittest.TestCase):
     def test_reasoning_receives_only_the_visible_reference_analysis(self):
         initial = build_task_input(CASE, "Reasoning")
         clarified = build_task_input(CASE, "Reasoning", clarified=True)
-        self.assertEqual(set(initial), {"question", "linguistics", "menu"})
+        self.assertEqual(set(initial), {"linguistics", "menu"})
+        self.assertEqual(set(clarified), set(initial))
         self.assertEqual(initial["linguistics"], CASE["linguistics"]["initial"])
         self.assertEqual(clarified["linguistics"], CASE["linguistics"]["clarified"])
 

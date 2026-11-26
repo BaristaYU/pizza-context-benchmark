@@ -309,6 +309,22 @@ class ProviderShapeTest(unittest.TestCase):
         with patch, self.assertRaises(ProviderError):
             AnthropicSession(SECRET, "claude-haiku-5-5").ask("prompt", self.tools)
 
+    def test_text_only_requests_do_not_declare_tools(self):
+        response = {"candidates": [{"content": {"parts": [{"text": "{}"}]}}],
+                    "output": [{"type": "message", "content": [{"type": "output_text", "text": "{}"}]}],
+                    "content": [{"type": "text", "text": "{}"}],
+                    "choices": [{"message": {"content": "{}"}}]}
+        calls, patch = self.capture(response)
+        with patch:
+            for provider, session_class in providers.SESSIONS.items():
+                with self.subTest(provider=provider):
+                    session = session_class(SECRET, "test-model")
+                    actions, _ = session.ask("prompt", [])
+                    self.assertEqual(actions, [])
+                    self.assertEqual(session.last_output["text"], "{}")
+                    self.assertTrue(calls[-1]["body"].keys().isdisjoint(
+                        {"tools", "tool_choice", "toolConfig", "parallel_tool_calls"}))
+
     def test_gemini_schema_keeps_supported_keywords(self):
         schema = gemini_schema({"type": "array", "items": {"type": "number"}, "minItems": 2,
                                 "additionalProperties": False, "$schema": "x"})

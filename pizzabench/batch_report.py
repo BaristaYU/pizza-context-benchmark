@@ -22,12 +22,12 @@ def token_counts(usage):
     return counts
 
 
-def summarize(cases, results, model):
+def summarize(cases, results, model, *, task='E2E'):
     by_id = {case['id']: case for case in cases}
     rows = []
     for report in results:
         case = by_id[report['case_id']]
-        question = case['question']
+        question = case.get('question') or {}
         termination = report['termination']
         attempted = termination != 'not_run'
         passed = attempted and bool((report.get('score') or {}).get('passed'))
@@ -55,6 +55,8 @@ def summarize(cases, results, model):
             'cost_usd': cost,
             'cumulative_cost_usd': round(sum(c for c in attempt_costs if c is not None), 6) if any(c is not None for c in attempt_costs) else None,
             'result_file': case['id']+'.json'})
+        if task == 'Reasoning':
+            rows[-1]['grading_status'] = (report.get('score') or {}).get('status')
     attempted = sum(r['attempted'] for r in rows)
     completed = sum(r['termination'] == 'finished' for r in rows)
     passed = sum(r['passed'] for r in rows)
@@ -64,8 +66,8 @@ def summarize(cases, results, model):
         subset = [r for r in rows if r['language'] == language]
         groups.append({'language': language, 'selected': len(subset),
             'attempted': sum(r['attempted'] for r in subset), 'passed': sum(r['passed'] for r in subset)})
-    return {'created_at': datetime.now().astimezone().isoformat(timespec='seconds'), 'model': model,
-            'task': 'E2E', 'selected': len(rows), 'attempted': attempted, 'completed': completed,
+    summary = {'created_at': datetime.now().astimezone().isoformat(timespec='seconds'), 'model': model,
+            'task': task, 'selected': len(rows), 'attempted': attempted, 'completed': completed,
             'passed': passed, 'grading_failed': sum(r['termination'] == 'finished' and not r['passed'] for r in rows),
             'api_errors': sum(r['termination'] == 'api_error' for r in rows),
             'not_run': len(rows)-attempted, 'termination_counts': dict(Counter(r['termination'] for r in rows)),
@@ -83,6 +85,13 @@ def summarize(cases, results, model):
             'cost_usd': round(sum(r['cost_usd'] or 0 for r in rows), 6),
             'cumulative_cost_usd': round(sum(r['cumulative_cost_usd'] or 0 for r in rows), 6),
             'cost_note': 'configs/agent_models.json의 공개 단가로 계산한 추정 금액이며 실제 청구서와 다를 수 있습니다.'}
+    if task == 'Reasoning':
+        statuses = Counter(row['grading_status'] for row in rows)
+        valid = passed + statuses['condition_mismatch']
+        summary.update(format_errors=statuses['format_error'], condition_mismatches=statuses['condition_mismatch'],
+                       valid_answers=valid, success_rate_valid_answers=passed / valid if valid else None,
+                       format_error_rate=statuses['format_error'] / completed if completed else None)
+    return summary
 
 
 def render_html(summary):
